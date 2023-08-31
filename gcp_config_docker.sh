@@ -1,1 +1,0 @@
-gcloud auth configure-docker
