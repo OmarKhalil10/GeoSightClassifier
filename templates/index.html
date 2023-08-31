@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Landmark Classification & Tagging for Social Media</title>
+</head>
+<link rel="stylesheet" href="static/css/styles.css">
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
+
+<body>
+    <div class="header">
+        <h1>Landmark Classification & Tagging for Social Media</h1>
+    </div>
+    <div class="container">
+        <div class="app-description">
+            <p>
+                Introducing our Landmark Classifier App: Your gateway to effortless photo tagging and organization! Our
+                app utilizes cutting-edge machine learning techniques to automatically classify landmarks in your
+                photos, even when location metadata is missing. Whether your photos lack GPS data or were taken on older
+                devices, our app has you covered. With features like data preprocessing, augmentation, and custom CNN
+                design, you'll experience seamless organization and tagging. We've also integrated transfer learning to
+                provide you with the best results, comparing them to our in-house CNN model. Say goodbye to manual
+                tagging and hello to smarter, more efficient photo management with our Landmark Classifier App.
+            </p>
+        </div>
+        <div class="upload-helper">
+            <p>
+                Please make sure to only use <b>JPG (JPEG)</b> files for this task. Other file formats are <b>not supported</b>
+            </p>
+        </div>
+        <form method="POST" enctype="multipart/form-data" id="upload-form">
+            <h2>Upload an Image</h2>
+            <div class="flex-container">
+                <label class="custom-file-upload">
+                    Choose File
+                    <input type="file" name="file" accept="image/*" required>
+                </label>
+                <button type="button" id="classify-button">Classify</button>
+            </div>
+        </form>
+
+        <div class="image-section" style="display: none;">
+            <h2>Uploaded Image:</h2>
+            <img src="" alt="Uploaded Image" id="uploaded-image" accept="image/*" required>
+        </div>
+
+        <div class="predictions-section" style="display: none;">
+            <h2>Top 5 predicted classes and their probabilities for the uploaded image.</h2>
+            <br>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Class</th>
+                        <th>Probability</th>
+                    </tr>
+                </thead>
+                <tbody id="predictions-table">
+                    <!-- Predicted class names and probabilities will be added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <footer>
+        &copy; 2023 Landmark Classifier App
+    </footer>
+    <script src="static/js/script.js"></script>
+</body>
+
+</html>

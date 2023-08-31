@@ -1,0 +1,23 @@
+# Exclude common development files and directories
+.git
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+
+# Exclude text editors and IDE settings
+.vscode
+.idea
+
+# Exclude Docker-specific files and directories
+Dockerfile
+.dockerignore
+
+# Exclude test or development data
+tests
+data
+
+# Exclude Python virtual environment
+venv/
