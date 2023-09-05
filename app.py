@@ -38,6 +38,9 @@ def predict():
                 img = Image.open(uploaded_file)
                 img.save(img_path)
 
+                # Get the original filename
+                original_filename = uploaded_file.filename
+
                 # Transform to tensor
                 timg = T.ToTensor()(img).unsqueeze_(0)
 
@@ -59,6 +62,7 @@ def predict():
                     "classes": top_classes,
                     "probs": top_probs,
                     "image_path": img_path,
+                    "image_name": original_filename,  # Include the original filename
                     "max_prob": max_prob,
                 })
             except Exception as e:

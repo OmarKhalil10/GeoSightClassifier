@@ -1,6 +1,6 @@
 runtime: custom
 env: flex
-service: my-docker-api
+service: geo-sight-classifier
 
 manual_scaling:
   instances: 1

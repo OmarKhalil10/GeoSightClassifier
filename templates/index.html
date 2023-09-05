@@ -1,69 +1,317 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Landmark Classification & Tagging for Social Media</title>
+
+    <!-- Metas -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="GeoSightClassifier - Landmark Classifier & Tagging for Social Media">
+    <meta name="description" content="GeoSightClassifier - Landmark Classifier & Tagging for Social Media">
+    <meta name="author" content="">
+
+    <!-- Title  -->
+    <title>GeoSightClassifier</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="static/images/icon.ico">
+
+    <!-- Google Fonts -->
+    <link href="static/css/css.css" rel="stylesheet">
+    <link href="static/css/css2_1.css" rel="stylesheet">
+    <link href="static/css/css2.css" rel="stylesheet">
+
+    <!-- Plugins -->
+    <link rel="stylesheet" href="static/css/plugins.css">
+
+    <!-- Core Style Css -->
+    <link rel="stylesheet" href="static/css/style.css">
+
+    <!-- Classifier Style Css -->
+    <link rel="stylesheet" href="static/css/styles.css">
+
 </head>
-<link rel="stylesheet" href="static/css/styles.css">
-<link rel="icon" href="data:;base64,iVBORw0KGgo=">
 
-<body>
-    <div class="header">
-        <h1>Landmark Classification & Tagging for Social Media</h1>
-    </div>
-    <div class="container">
-        <div class="app-description">
-            <p>
-                Introducing our Landmark Classifier App: Your gateway to effortless photo tagging and organization! Our
-                app utilizes cutting-edge machine learning techniques to automatically classify landmarks in your
-                photos, even when location metadata is missing. Whether your photos lack GPS data or were taken on older
-                devices, our app has you covered. With features like data preprocessing, augmentation, and custom CNN
-                design, you'll experience seamless organization and tagging. We've also integrated transfer learning to
-                provide you with the best results, comparing them to our in-house CNN model. Say goodbye to manual
-                tagging and hello to smarter, more efficient photo management with our Landmark Classifier App.
-            </p>
-        </div>
-        <div class="upload-helper">
-            <p>
-                Please make sure to only use <b>JPG (JPEG)</b> files for this task. Other file formats are <b>not supported</b>
-            </p>
-        </div>
-        <form method="POST" enctype="multipart/form-data" id="upload-form">
-            <h2>Upload an Image</h2>
-            <div class="flex-container">
-                <label class="custom-file-upload">
-                    Choose File
-                    <input type="file" name="file" accept="image/*" required>
-                </label>
-                <button type="button" id="classify-button">Classify</button>
+<body class="dots-waves">
+
+    <!-- ==================== Start Loading ==================== -->
+
+    <div class="loader-wrap">
+        <svg viewBox="0 0 1000 1000" preserveAspectRatio="none">
+            <path id="svg" d="M0,1005S175,995,500,995s500,5,500,5V0H0Z"></path>
+        </svg>
+
+        <div class="loader-wrap-heading">
+            <div class="load-text">
+                <span>L</span>
+                <span>o</span>
+                <span>a</span>
+                <span>d</span>
+                <span>i</span>
+                <span>n</span>
+                <span>g</span>
             </div>
-        </form>
-
-        <div class="image-section" style="display: none;">
-            <h2>Uploaded Image:</h2>
-            <img src="" alt="Uploaded Image" id="uploaded-image" accept="image/*" required>
-        </div>
-
-        <div class="predictions-section" style="display: none;">
-            <h2>Top 5 predicted classes and their probabilities for the uploaded image.</h2>
-            <br>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Class</th>
-                        <th>Probability</th>
-                    </tr>
-                </thead>
-                <tbody id="predictions-table">
-                    <!-- Predicted class names and probabilities will be added here -->
-                </tbody>
-            </table>
         </div>
     </div>
-    <footer>
-        &copy; 2023 Landmark Classifier App
+
+    <!-- ==================== End Loading ==================== -->
+
+    <div class="cursor"></div>
+
+    <!-- ==================== Start progress-scroll-button ==================== -->
+
+    <div class="progress-wrap cursor-pointer">
+        <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+            <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"></path>
+        </svg>
+    </div>
+
+    <!-- ==================== End progress-scroll-button ==================== -->
+
+    <!-- ==================== Start Theme Color Change ==================== -->
+
+    <div class="setting-switch">
+        <div class="mb-80">
+            <h6 class="sub-title mb-30">Colors</h6>
+            <ul class="switch-color">
+                <li data-color="#55e6a5" class="active"></li>
+                <li data-color="#e8fe51"></li>
+                <li data-color="#f08f74"></li>
+                <li data-color="#d1d1d1"></li>
+                <li data-color="#55a3e6"></li>
+                <li data-color="#e69955"></li>
+            </ul>
+        </div>
+        <span class="icon pe-7s-config"></span>
+    </div>
+
+    <!-- ==================== End Theme Color Change ==================== -->
+
+    <div id="home_wave"></div>
+
+    <!-- ==================== Start Navbar ==================== -->
+
+    <nav class="navbar navbar-expand-lg static">
+        <div class="container">
+
+            <!-- Logo -->
+            <a class="logo icon-img-100" href="#">
+                <img src="static/images/logo.png" alt="logo">
+            </a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="icon-bar"><i class="fas fa-bars"></i></span>
+            </button>
+
+            <!-- navbar links -->
+            <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#0" data-scroll-nav="0"><span class="rolling-text">Home</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#0" data-scroll-nav="1"><span class="rolling-text">About</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#0" data-scroll-nav="2"><span
+                                class="rolling-text">Classifier</span></a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="md-hide">
+                <div class="butn-presv">
+                    <a href="mailto:omar.khalil498@gmail.com" class="butn butn-sm butn-bg bg-white radius-5 skew"
+                        target="_blank">
+                        <span class="text-dark">Contact Us!</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==================== End Navbar ==================== -->
+
+    <main>
+
+        <!-- ==================== Start main box ==================== -->
+
+        <section class="box">
+
+            <div class="container">
+                <div class="row md-marg">
+
+                    <!-- ==================== Start about ==================== -->
+
+                    <div class="about section-padding" data-scroll-index="0">
+                        <div class="cont">
+                            <h1>Welcome to <span class="main-color">GeoSightClassifier</span></h1>
+                        </div>
+                        <div class="stauts mt-80">
+                            <div class="d-flex align-items-center">
+                                <div class="mr-40">
+                                    <div class="d-flex align-items-center">
+                                        <h2>+50</h2>
+                                        <p>Landmark Classification <br></p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="butn-presv">
+                                        <a href="https://github.com/OmarKhalil10/GeoSightClassifier"
+                                            class="butn butn-md butn-bord radius-5 skew" target="_blank">
+                                            <span>Project Repository on GitHub</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ==================== End about ==================== -->
+
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ==================== End main box ==================== -->
+
+        <!-- ==================== Start Contact ==================== -->
+
+        <section class="contact section-padding bord-thin-top" data-scroll-index="1">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="sec-head md-mb80">
+                            <h2 class="fz-50">About Us</h2>
+                            <p class="fz-20">Welcome to the Landmark Classifier App! We make photo tagging effortless.
+                                Our app automatically recognizes landmarks in your photos, even without location data.
+                                Whether your pictures lack GPS info or are from older devices, we've got you covered.
+                            </p>
+                            <p class="fz-20">
+                                With our app, you can organize and tag photos easily. We've used advanced technology to
+                                ensure accurate results. Say goodbye to manual tagging and hello to smarter photo
+                                management with the Landmark Classifier App!
+                            </p>
+                            <div class="phone fz-30 fw-600 mt-30 underline">
+                                <a href="mailto:omar.khalil498@gmail.com" class="main-color" target="_blank">Give Us
+                                    Feedback</a>
+                            </div>
+                            <ul class="rest social-text d-flex mt-60">
+                                <li class="mr-30">
+                                    <a href="#0" class="hover-this"><span class="hover-anim">Facebook</span></a>
+                                </li>
+                                <li class="mr-30">
+                                    <a href="#0" class="hover-this"><span class="hover-anim">Twitter</span></a>
+                                </li>
+                                <li class="mr-30">
+                                    <a href="#0" class="hover-this"><span class="hover-anim">LinkedIn</span></a>
+                                </li>
+                                <li>
+                                    <a href="#0" class="hover-this"><span class="hover-anim">Instagram</span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="box section-padding bord-thin-top text-center" data-scroll-index="2">
+            <div class="container">
+                <div class="row justify-content-center align-items-center">
+
+                    <!-- ==================== Start Form ==================== -->
+
+                    <form method="POST" enctype="multipart/form-data" id="upload-form">
+                        <h4 class="header-title">Upload and Classify Image</h2>
+                        <div class="note">
+                            <p class="fz-15 mt-10">Please make sure to only use <strong>JPG (JPEG)</strong> files for this task.
+                                Other file formats are <strong>not supported</strong>.
+                            </p>
+                        </div>
+                        <div class="flex-container">
+                            <label class="custom-file-upload">
+                                Upload
+                                <input type="file" name="file" accept="image/*" required>
+                            </label>
+                            <button type="button" id="classify-button">Classify</button>
+                        </div>
+                        <div class="status-note" id="upload-status-note" style="display: none;">
+                            <p id="upload-status"></p> <!-- Display upload status here -->
+                        </div>
+                    </form>
+                    <!-- ==================== End Form ==================== -->
+
+                    <!-- ==================== Start Classification Table ==================== -->
+
+
+                    <div class="image-section" style="display: none;">
+                        <img src="" alt="Uploaded Image" id="uploaded-image" accept="image/*"
+                            style="max-width: 400px; max-height: 400px;" required>
+                    </div>
+
+                    <div class="predictions-section" style="display: none;">
+                        <h4>Top 5 predicted classes and their probabilities for the uploaded image.</h2>
+                        <br>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Probability</th>
+                                </tr>
+                            </thead>
+                            <tbody id="predictions-table">
+                                <!-- Predicted class names and probabilities will be added here -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- ==================== End Classification Table ==================== -->
+
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ==================== Start Footer ==================== -->
+
+    <footer class="pt-30 pb-30">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="text-center">
+                        <p class="fz-13">© 2023 GeoSightClassifier is Proudly Powered by GCP APP Engine</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </footer>
+
+    <!-- ==================== End Footer ==================== -->
+
+    <!-- jQuery -->
+    <script src="static/js/jquery-3.6.0.min.js"></script>
+    <script src="static/js/jquery-migrate-3.4.0.min.js"></script>
+
+    <!-- plugins -->
+    <script src="static/js/plugins.js"></script>
+
+    <script src="static/js/ScrollTrigger.min.js"></script>
+
+    <!-- custom scripts -->
+    <script src="static/js/scripts.js"></script>
+
+    <script src="static/js/three.min.js"></script>
+
+    <script src="static/js/cdemo.js"></script>
+
     <script src="static/js/script.js"></script>
+
 </body>
 
 </html>

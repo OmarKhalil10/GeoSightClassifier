@@ -4,6 +4,25 @@ document.addEventListener("DOMContentLoaded", function () {
     const uploadedImage = document.getElementById("uploaded-image");
     const predictionsSection = document.querySelector(".predictions-section");
     const imageSection = document.querySelector(".image-section");
+    const uploadStatus = document.getElementById("upload-status");
+    const uploadStatusNote = document.getElementById("upload-status-note");
+
+
+    // Add an event listener for the file input to capture the selected file's name
+    const fileInput = document.querySelector('input[type="file"]');
+    fileInput.addEventListener("change", function () {
+        const selectedFile = this.files[0];
+        if (selectedFile) {
+            // Display the upload status message with the selected file's name
+            uploadStatusNote.style.display = "block";
+            uploadStatus.textContent = `Image uploaded successfully with name: ${selectedFile.name}`;
+
+        } else {
+            // Clear the upload status message if no file is selected
+            uploadStatusHeader.textContent = `No file is selected for upload.`;
+            uploadStatus.textContent = "";
+        }
+    });
 
     classifyButton.addEventListener("click", function () {
         const formData = new FormData(form); // Create FormData from the form
